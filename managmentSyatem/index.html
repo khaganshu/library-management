@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>📚 Library Management System</h1>
+        <nav>
+            <button class="nav-btn active" data-section="dashboard">Dashboard</button>
+            <button class="nav-btn" data-section="books">Books</button>
+            <button class="nav-btn" data-section="members">Members</button>
+            <button class="nav-btn" data-section="transactions">Transactions</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="section active">
+            <h2>Dashboard</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Books</h3>
+                    <p id="totalBooks">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Members</h3>
+                    <p id="totalMembers">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Books Borrowed</h3>
+                    <p id="booksBorrowed">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Available Books</h3>
+                    <p id="availableBooks">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Books Section -->
+        <section id="books" class="section">
+            <h2>Book Management</h2>
+            <div class="section-header">
+                <button class="btn primary" onclick="showAddBookForm()">Add New Book</button>
+                <input type="text" id="bookSearch" placeholder="Search books..." onkeyup="searchBooks()">
+            </div>
+            
+            <div id="addBookForm" class="form-container hidden">
+                <h3>Add New Book</h3>
+                <form id="bookForm">
+                    <input type="text" id="bookTitle" placeholder="Book Title" required>
+                    <input type="text" id="bookAuthor" placeholder="Author" required>
+                    <input type="text" id="bookISBN" placeholder="ISBN" required>
+                    <input type="text" id="bookGenre" placeholder="Genre" required>
+                    <input type="number" id="bookCopies" placeholder="Total Copies" min="1" required>
+                    <button type="submit">Add Book</button>
+                    <button type="button" onclick="hideAddBookForm()">Cancel</button>
+                </form>
+            </div>
+
+            <div id="editBookForm" class="form-container hidden">
+                <h3>Edit Book</h3>
+                <form id="editBookFormElement">
+                    <input type="hidden" id="editBookId">
+                    <input type="text" id="editBookTitle" placeholder="Book Title" required>
+                    <input type="text" id="editBookAuthor" placeholder="Author" required>
+                    <input type="text" id="editBookISBN" placeholder="ISBN" required>
+                    <input type="text" id="editBookGenre" placeholder="Genre" required>
+                    <input type="number" id="editBookCopies" placeholder="Total Copies" min="1" required>
+                    <button type="submit">Update Book</button>
+                    <button type="button" onclick="hideEditBookForm()">Cancel</button>
+                </form>
+            </div>
+
+            <table id="booksTable">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>ISBN</th>
+                        <th>Genre</th>
+                        <th>Available</th>
+                        <th>Total</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="booksTableBody">
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Members Section -->
+        <section id="members" class="section">
+            <h2>Member Management</h2>
+            <div class="section-header">
+                <button class="btn primary" onclick="showAddMemberForm()">Register New Member</button>
+                <input type="text" id="memberSearch" placeholder="Search members..." onkeyup="searchMembers()">
+            </div>
+
+            <div id="addMemberForm" class="form-container hidden">
+                <h3>Register New Member</h3>
+                <form id="memberForm">
+                    <input type="text" id="memberName" placeholder="Full Name" required>
+                    <input type="email" id="memberEmail" placeholder="Email" required>
+                    <input type="tel" id="memberPhone" placeholder="Phone Number" required>
+                    <button type="submit">Register</button>
+                    <button type="button" onclick="hideAddMemberForm()">Cancel</button>
+                </form>
+            </div>
+
+            <div id="editMemberForm" class="form-container hidden">
+                <h3>Edit Member</h3>
+                <form id="editMemberFormElement">
+                    <input type="hidden" id="editMemberId">
+                    <input type="text" id="editMemberName" placeholder="Full Name" required>
+                    <input type="email" id="editMemberEmail" placeholder="Email" required>
+                    <input type="tel" id="editMemberPhone" placeholder="Phone Number" required>
+                    <button type="submit">Update Member</button>
+                    <button type="button" onclick="hideEditMemberForm()">Cancel</button>
+                </form>
+            </div>
+
+            <table id="membersTable">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Books Borrowed</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="membersTableBody">
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Transactions Section -->
+        <section id="transactions" class="section">
+            <h2>Transactions</h2>
+            <div class="section-header">
+                <button class="btn primary" onclick="showBorrowForm()">Borrow Book</button>
+                <button class="btn secondary" onclick="showReturnForm()">Return Book</button>
+            </div>
+
+            <div id="borrowForm" class="form-container hidden">
+                <h3>Borrow Book</h3>
+                <form id="borrowBookForm">
+                    <select id="borrowMember" required>
+                        <option value="">Select Member</option>
+                    </select>
+                    <select id="borrowBook" required>
+                        <option value="">Select Book</option>
+                    </select>
+                    <button type="submit">Borrow Book</button>
+                    <button type="button" onclick="hideBorrowForm()">Cancel</button>
+                </form>
+            </div>
+
+            <div id="returnForm" class="form-container hidden">
+                <h3>Return Book</h3>
+                <form id="returnBookForm">
+                    <select id="returnTransaction" required>
+                        <option value="">Select Active Transaction</option>
+                    </select>
+                    <button type="submit">Return Book</button>
+                    <button type="button" onclick="hideReturnForm()">Cancel</button>
+                </form>
+            </div>
+
+            <table id="transactionsTable">
+                <thead>
+                    <tr>
+                        <th>Member</th>
+                        <th>Book</th>
+                        <th>Borrow Date</th>
+                        <th>Return Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="transactionsTableBody">
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
